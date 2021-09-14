@@ -1,6 +1,6 @@
 # From-Nand-to-Tetris
-The Elements of Computing Systems
-
+The Elements of Computing Systems by Noam Nisan and Shimon Schocken.
+This repository includes all assignments I did in the course called Nand2tetris.
 
 Project 00: Introduction
 Project 01: Boolean Logic
@@ -11,7 +11,7 @@ Project 05: Computer Architecture
 Project 06: Assembler
 Project 07: VM I: Stack Arithmetic
 Project 08: VM II: Program Control
-Project 09: High-Level Language
+Project 09: High-Level Language - not included
 Project 10: Compiler I: Syntax Analysis
 Project 11: Compiler II: Code Generation
 Project 12: Operating System
