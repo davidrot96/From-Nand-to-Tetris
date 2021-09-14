@@ -1,0 +1,39 @@
+david96,nataliy 
+===============================================================================
+David Rotenberg, 315518175, rotenberg.david@mail.huji.ac.il
+Natali Yosupov, 319085726, natali.yosupov@mail.huji.ac.il
+===============================================================================
+
+                           Project 03 - An HDL File
+                           ----------------------- 
+  
+
+Submitted Files
+---------------
+README - This file.
+
+a:
+Bit.hdl
+PC.hdl
+RAM8.hdl
+RAM64.hdl
+Register.hdl
+b:
+RAM512.hdl
+RAM4K.hdl
+RAM16K.hdl
+
+
+Remarks
+-------
+
+a:
+Bit - we implemented the chip by using Mux, DFF chips
+Register -  we implemented the chip by using the Bit chip
+PC - we implemented the chip by using Inc, Mux, Register chips
+RAM8 - we implemented the chip by using DMux8Way, Mux8Way16, Register chips
+RAM64 - we implemented the chip by using DMux8Way, Mux8Way16, RAM8 chips
+b:
+RAM512 - we implemented the chip by using DMux8Way, Mux8Way16, RAM64 chips
+RAM4K - we implemented the chip by using DMux8Way, Mux8Way16, RAM512 chips
+RAM16K - we implemented the chip by using DMux4Way, Mux4Way16, RAM4K chips
