@@ -1,0 +1,190 @@
+
+
+class Screen {
+    static Array screen;
+    static boolean color_of_screen;
+
+
+    /** Initializes the Screen. */
+    function void init() {
+        let screen = 16384;
+        let color_of_screen = true;
+        return;
+    }
+
+    /** Erases the whole s. */
+    function void clearScreen() {
+        var int i;
+        let i = 0;
+        while (i < 8192) {
+            let screen[i] = 0;
+            let i = i + 1;
+        }
+        return;
+    }
+
+    /** Sets the color_of_screen to be used in further draw commands
+     *  where white = false, black = true. */
+    function void setColor(boolean b) {
+        let color_of_screen = b;
+        return;
+    }
+
+    /** Draws the (x_1, y_1) pixel. */
+    function void drawPixel(int x_1, int y_1) {
+        var int address, bit;
+        let address = (32*y_1) + (x_1/16);
+        let bit = Math.power(x_1 & 15);
+        if (~color_of_screen) {
+            let screen[address] = screen[address] & ~bit;
+        }
+        else {
+            let screen[address] = screen[address] | bit;
+        }
+        return;
+    }
+
+    /** Draws a line from (x1, y1) to (x2, y2). */
+    function void drawLine(int x1, int y1, int x2, int y2) {
+        var int dx, dy, chenge, yM, yMax, xM, xMax;
+        var int a, b, check, advance, valid;
+        let yM = Math.min(y1, y2);
+		let yMax =  Math.max(y1, y2);
+		let xM = Math.min(x1, x2);
+        let xMax =  Math.max(x1, x2);
+        if (x1 = x2) {
+            while (~(yMax < yM)) {
+				do Screen.drawPixel(x1, yM);
+				let yM = yM + 1;
+			}
+            return;
+        }
+        if (y1 = y2) {
+            do Screen.helper_line(y1, xM, xMax);
+            return;
+        }
+
+        if (x1 > x2) {
+            let chenge = x1;
+            let x1 = x2;
+            let x2 = chenge;
+
+            let chenge = y1;
+            let y1 = y2;
+            let y2 = chenge;
+        }
+
+        let dx = x2 - x1;
+        let dy = y2 - y1;
+        if (dy > 0) {
+            let advance = 1;
+        }
+        else {
+            let advance = -1;
+        }
+        let a = 0;
+        let b = 0;
+        let check = 0;
+
+
+        while ((a < dx) & (((advance > 0) & (b < dy)) | ((advance < 0) & (b > dy)))) {
+            do Screen.drawPixel(x1 + a, y1 + b);
+            if (check < 0) {
+                let a = a + 1;
+                let check = check + (dy*advance);
+            }
+            else{
+                let b = b + advance;
+                let check = check - dx;
+            }
+        }
+        return;
+    }
+
+    function void helper_line(int y_1, int x1, int x2) {
+        var int l, r, x116, x216, x11, x22;
+
+        if (x2 - x1 < 15) {
+            while (~(x1 > x2)) {
+                do Screen.drawPixel(x1, y_1);
+                let x1 = x1 + 1;
+            }
+            return;
+        }
+
+        let x116 = x1 & 15;
+        let x216 = x2 & 15;
+        let l = (32*y_1) + (x1/16);
+        let r = (32*y_1) + (x2/16);
+
+        if (~(x116 = 0)) {
+            let x11 = x1 + (16 - x116);
+            while (~(x1 > x11)) {
+                do Screen.drawPixel(x1, y_1);
+                let x1 = x1 + 1;
+            }
+            let l = l + 1;
+        }
+
+        if (~(x216 = 0)) {
+            let x22 = x2 - x216;
+            while (~(x22 > x2)) {
+                do Screen.drawPixel(x22, y_1);
+                let x22 = x22 + 1;
+            }
+            let r = r - 1;
+        }
+
+        while (~ (l > r)) {
+            let screen[l] = color_of_screen;
+            let l = l + 1;
+        }
+        return;
+    }
+
+    /** Draws a filled circle of radius r around (cx, cy). */
+    function void drawCircle(int cx, int cy, int r) {
+        var int x_1, y_1, dec;
+        let x_1 = r;
+        let y_1 = 0;
+        let dec = 1 - x_1;
+
+        while (~(y_1 > x_1)) {
+            do Screen.draw_circle_helper(x_1 + cy, -y_1 + cx , y_1 + cx);
+            do Screen.draw_circle_helper(-x_1 + cy, -y_1 + cx, y_1 + cx);
+            do Screen.draw_circle_helper(y_1 + cy, -x_1 + cx,  x_1 + cx);
+            do Screen.draw_circle_helper(-y_1 + cy, -x_1 + cx, x_1 + cx);
+
+            let y_1 = y_1 + 1;
+
+            if (dec > 0) {
+                let x_1 = x_1 - 1;
+                let dec = dec + y_1 + y_1 - x_1 - x_1  + 1;
+            }
+            else {
+                let dec = dec + y_1 + y_1 + 1;
+            }
+        }
+        return;
+    }
+
+
+        /** Draws a filled rectangle where the top l corner
+     *  is (x1, y1) and the bottom r corner is (x2, y2). */
+     function void drawRectangle(int x1, int y1, int x2, int y2) {
+        while (y1 < y2) {
+            do Screen.helper_line(y1, x1, x2);
+            let y1 = y1 + 1;
+        }
+        do Screen.helper_line(y1, x1, x2);
+        return;
+    }
+
+    function void draw_circle_helper(int y_1, int x1, int x2) {
+            while (~(x1 > x2)) {
+                do Screen.drawPixel(x1, y_1);
+                let x1 = x1 + 1;
+            }
+            return;
+        }
+}

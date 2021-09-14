@@ -1,0 +1,87 @@
+// This file is part of www.nand2tetris.org
+// and the book "The Elements of Computing Systems"
+// by Nisan and Schocken, MIT Press.
+// File name: projects/12/Memory.jack
+
+/**
+ * This library provides two services: direct access to the computer's main
+ * memory (RAM), and allocation and recycling of memory blocks. The Hack RAM
+ * consists of 32,768 words, each holding a 16-bit binary number.
+ */ 
+class Memory {
+    static Array ram;
+    static int free_pointer;
+
+    /** Initializes the class. */
+    function void init() {
+        let ram = 0;
+        let free_pointer = 2048;
+        let ram[free_pointer] = 16384 - 2048;
+        return;
+    }
+
+    /** Returns the RAM value at the given address. */
+    function int peek(int address) {
+        return ram[address];
+    }
+
+    /** Sets the RAM value at the given address to the given value. */
+    function void poke(int address, int value) {
+        let ram[address] = value;
+        return;
+    }
+
+    /** Finds an available RAM block of the given size and returns
+     *  a reference to its base address. */
+    function int alloc(int size) {
+        var int temp_free_pointer, pri_free_pointer, result_pointer;
+        var boolean is_first;
+        let is_first = true;
+        let temp_free_pointer = free_pointer;
+        while (ram[temp_free_pointer] < size){
+            let is_first = false;
+            let pri_free_pointer = temp_free_pointer;
+            let temp_free_pointer = ram[temp_free_pointer+1];
+        }
+        if (ram[temp_free_pointer] = size){
+            if (is_first){
+                let result_pointer = free_pointer;
+                let free_pointer = ram[temp_free_pointer+1];
+            }
+            else{
+                let ram[pri_free_pointer+1] = ram[temp_free_pointer+1];
+                let result_pointer = temp_free_pointer;
+            }
+        }
+        else
+        {
+            if(is_first)
+            {
+                let temp_free_pointer = free_pointer + size +2;
+                let ram[temp_free_pointer + 1] = ram[free_pointer+1];
+                let ram[temp_free_pointer] = ram[free_pointer] - size -2;
+                let ram[free_pointer] = size;
+                let result_pointer = free_pointer;
+                let free_pointer = temp_free_pointer;
+            }
+            else
+            {
+                let ram[pri_free_pointer+1] = temp_free_pointer + size +2;
+                let ram[temp_free_pointer + size + 2] = ram[temp_free_pointer] - size - 2;
+                let ram[temp_free_pointer + size + 3] = ram[temp_free_pointer + 1];
+                let ram[temp_free_pointer] = size;
+                let result_pointer = temp_free_pointer;
+            }
+        }
+        return result_pointer;
+    }
+    /** De-allocates the given object (cast as an array) by making
+     *  it available for future allocations. */
+    function void deAlloc(Array o) {
+        var int temp_pointer;
+        let temp_pointer = free_pointer;
+        let free_pointer = o;
+        let ram[o + 1] = temp_pointer; 
+        return;
+    }    
+}

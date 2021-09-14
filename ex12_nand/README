@@ -1,0 +1,34 @@
+nataliy,david96
+===============================================================================
+David Rotenberg, 315518175, rotenberg.david@mail.huji.ac.il
+Natali Yosupov, 319085726, natali.yosupov@mail.huji.ac.il
+===============================================================================
+
+                           Project 12 - An ASM Files
+                            ----------------------- 
+  
+
+Submitted Files
+---------------
+README - This file.
+Array.jack
+Keyboard.jack
+Math.jack
+Memory.jack
+Screen.jack
+String.jack
+Sys.jack
+Output.jack
+
+
+Remarks
+-------
+Makefile - the make file of the program 
+Array.jack - handle Array in OS
+Keyboard.jack - handle keyboard in OS
+Math.jack - math class
+Memory.jack - memory class
+Screen.jack - screen class
+String.jack - handle string on the screen
+Sys.jack - system of OS
+Output.jack - handle output 
