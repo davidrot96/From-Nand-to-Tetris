@@ -1,0 +1,25 @@
+nataliy,david96
+===============================================================================
+David Rotenberg, 315518175, rotenberg.david@mail.huji.ac.il
+Natali Yosupov, 319085726, natali.yosupov@mail.huji.ac.il
+===============================================================================
+
+                           Project 04 - An ASM Files
+                           ----------------------- 
+  
+
+Submitted Files
+---------------
+README - This file.
+Fill.asm - The Fill screen program.
+Divide.asm - A divide function.
+Mult.asm - A multiplication function.
+Sort.asm - sorting function.
+
+Remarks
+-------
+ 
+Fill - the screen is filling black when a button on the keyboard is pressed.
+Divide - the function divides 2 binary numbers.
+Mult - the function multiplies 2 binary numbers.
+Sort - the function sorting numbers to a descending order.

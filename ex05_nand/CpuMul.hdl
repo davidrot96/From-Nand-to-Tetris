@@ -1,0 +1,72 @@
+/**
+* This chip is an extension of the book CPU by using the extended ALU.
+* More specificly if instruction[15]==0 or (instruction[14] and instruction[13] equals 1)
+* the CpuMul behave exactly as the book CPU.
+* While if it is C instruction and instruction[13] == 0 the output will be D*A/M 
+* (according to instruction[12]).
+* Moreover, if it is c instruction and instruction[14] == 0 it will behave as follows:
+*
+* instruction:  | 12 | 11 | 10 |
+* _____________________________
+* shift left D  | 0  | 1  | 1  |
+* shift left A  | 0  | 1  | 0  |
+* shift left M  | 1  | 1  | 0  |
+* shift right D | 0  | 0  | 1  |
+* shift right A | 0  | 0  | 0  |
+* shift right M | 1  | 0  | 0  |
+**/
+
+CHIP CpuMul{
+
+    IN  inM[16],         // M value input  (M = contents of RAM[A])
+        instruction[16], // Instruction for execution
+        reset;           // Signals whether to re-start the current
+                         // program (reset=1) or continue executing
+                         // the current program (reset=0).
+
+    OUT outM[16],        // M value output
+        writeM,          // Write into M? 
+        addressM[15],    // Address in data memory (of M)
+        pc[15];          // address of next instruction
+
+     PARTS:
+     And16(a=instruction, b=true, out[0]=j3,out[1]=j2,out[2]=j1,
+        out[3]=d3,out[4]=d2,out[5]=d1,out[6]=c6,out[7]=c5,out[8]=c4,
+        out[9]=c3,out[10]=c2,out[11]=c1,out[12]=aI,out[15]=out15,out[0..14]=addressa);
+    DMux(in=true, sel=out15, a=outA, b=outB);
+
+    // set ARegister
+    And(a=outB, b=d1, out=outAnd1);
+    Mux16(a=instruction, b=outAlu, sel=outAnd1, out=A);
+    Or(a=outA, b=outAnd1, out=Alaod);
+    ARegister(in=A, load=Alaod, out=aRegister);
+
+    // set DRegister
+    And(a=d2, b=outB, out=Dlaod);
+    DRegister(in=outAlu, load=Dlaod, out=dRegister);
+
+    // set Mul
+    Mul(a=dRegister,b=Aorm,out=outmul);
+
+    //set ALU
+    Mux16(a=aRegister, b=inM, sel=aI, out=Aorm);
+    ExtendAlu(x=dRegister,y=Aorm,instruction=instruction[6..14],out=outAlu,zr=zr,ng=ng);
+    
+    //set jump conditions
+    Not(in=zr, out=nzr);
+    Not(in=ng, out=nng);
+    And(a=nzr, b=nng, out=pos);
+    And(a=j1, b=ng, out=jlt);
+    And(a=j2, b=zr, out=jeq);
+    And(a=j3, b=pos, out=jgt);
+    Or(a=jlt, b=jeq, out=jle);
+    Or(a=jle, b=jgt, out=jmp);
+    And(a=outB, b=jmp, out=shouldjmp);
+
+    // outputs
+    And16(a=outAlu, b=true, out=outM);
+    And16(a=aRegister, b=true, out[0..14]=addressM);
+    And(a=d3, b=outB, out=writeM);
+
+    PC(in=aRegister, load=shouldjmp, inc=true, reset=reset, out[0..14]=pc);
+}

@@ -1,0 +1,30 @@
+nataliy,david96
+===============================================================================
+David Rotenberg, 315518175, rotenberg.david@mail.huji.ac.il
+Natali Yosupov, 319085726, natali.yosupov@mail.huji.ac.il
+===============================================================================
+
+                           Project 05 - An hdl Files
+                           ----------------------- 
+  
+
+Submitted Files
+---------------
+README - This file.
+
+Memory.hdl
+CPU.hdl
+ExtendAlu.hdl
+Computer.hdl
+CpuMul.hdl
+
+
+
+Remarks
+-------
+ 
+Memory - the memory of the computer, we implemented the chip by using RAM16k, screen and keyboard
+CPU - the CPU(centre ‏ ‏processing unit) of the computer
+ExtendAlu - Extend of the chip ALU
+Computer - the computer, this chip is in charge to control the memory and the CPU
+CpuMul - Extend of the chip Mul
