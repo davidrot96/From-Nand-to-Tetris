@@ -1,0 +1,35 @@
+david96,nataliy 
+===============================================================================
+David Rotenberg, 315518175, rotenberg.david@mail.huji.ac.il
+Natali Yosupov, 319085726, natali.yosupov@mail.huji.ac.il
+===============================================================================
+
+                           Project 02 - An HDL File
+                           ----------------------- 
+  
+
+Submitted Files
+---------------
+README - This file.
+
+HalfAdder.hdl
+FullAdder.hdl
+Add16.hdl
+Inc16.hdl
+ALU.hdl
+ShiftLeft.hdl
+ShiftRight.hdl
+Mul.hdl
+
+
+Remarks
+-------
+
+HalfAdder - we implemented the chip by using And,Xor chips
+FullAdder - we implemented the chip by using 3 times in the HalfAdder chip
+Add16 - we implemented the chip by using HalfAdder, FullAdder chips
+Inc16 - we implemented the chip by using 16 times in the HalfAdder
+ALU - we implemented the chip by using Mux16, Not16, Add16, And16, Or8way, Or, Mux chips
+ShiftLeft - we implemented the chip by using And, Nand chips 
+ShiftRight - we implemented the chip by using And chip
+Mul - we implemented the chip by using And, Not16, Nux16, ShiftLeft, Add16 chips
